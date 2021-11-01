@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "customers")
-public class Users extends BaseEntity{
+public class Customers extends BaseEntity{
 
     @Id
     @SequenceGenerator(name = "user_seq", initialValue = 1, allocationSize = 1)
