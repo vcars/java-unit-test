@@ -1,5 +1,5 @@
 server:
-  port: 9030
+  port : 80
   error:
     include-message: always
     whitelabel:
@@ -8,15 +8,6 @@ redis:
   host: redis-13023.c245.us-east-1-3.ec2.cloud.redislabs.com
   port: 13023
   password: "agRukI9hajlXJ603cvNPZBKf3P2H265X"
-  commandTimeout: 500
-  expireSeconds: 1000
-  dbIndex: 0
-  maxIdle: 50
-  minIdle: 50
-  maxTotal: 50
-  timeout: 5
-  maxWait: 10
-  shutdown: 100
 spring:
   application:
     name: unit-test
@@ -38,3 +29,5 @@ unittest:
   session:
     expired:
       signing: 6000
+swagger:
+  host: "localhost:80"

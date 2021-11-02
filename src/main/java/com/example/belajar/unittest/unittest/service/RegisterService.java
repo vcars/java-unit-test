@@ -22,15 +22,17 @@ public class RegisterService {
 
     public ValidationResponse execute(RegisterRequest request){
         this.doValidate(request);
-        if (ObjectUtils.isNotEmpty(customersRepository.getUserByUsername(request.getUsername()).get())) {
+        if (customersRepository.getUserByUsername(request.getUsername()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Username telah terpakai");
         }
         Customers customers = new Customers();
         customers.setEmail(request.getEmail());
+        customers.setUsername(request.getUsername());
         customers.setFullname(request.getFullname());
         customers.setPassword(request.getPassword());
         customers.setEmail(request.getEmail());
         customers.setIsDeleted(false);
+        customers.setCreatedBy("SYSTEM");
         try {
             customersRepository.save(customers);
         }
