@@ -1,6 +1,5 @@
 package com.example.belajar.unittest.unittest.service;
 
-import com.example.belajar.unittest.unittest.model.entity.Customers;
 import com.example.belajar.unittest.unittest.model.request.AccessTokenRequest;
 import com.example.belajar.unittest.unittest.model.response.ValidationResponse;
 import com.example.belajar.unittest.unittest.util.CacheUtility;
@@ -23,10 +22,10 @@ public class LogoutService {
         if (StringUtils.isEmpty(request.getAccessToken())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"access token tidak boleh kosong");
         }
-        if (StringUtils.isEmpty(cacheUtility.get(Constants.CUSTOMER_SESSION,request.getAccessToken()))){
+        if (StringUtils.isEmpty(cacheUtility.get(Constants.RDS_CUSTOMER_SESSION,request.getAccessToken()))){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"session tidak ditemukan");
         }
-        cacheUtility.delete(Constants.CUSTOMER_SESSION,request.getAccessToken());
+        cacheUtility.delete(Constants.RDS_CUSTOMER_SESSION,request.getAccessToken());
         return ValidationResponse.builder().result(true).build();
     }
 

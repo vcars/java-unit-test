@@ -26,8 +26,17 @@ spring:
     open-in-view: false
     generate-ddl: true
 unittest:
+  config:
+    retry:
+      login: 3
   session:
     expired:
-      signing: 6000
+      signing: 600
+      cooldown: 86400 #1 hari untuk expired
+      catalog : 3600
+  esb:
+    masterData:
+      catalog:
+        url: http://60a395d47c6e8b0017e2751c.mockapi.io/api/v1/catalog
 swagger:
   host: "localhost:80"

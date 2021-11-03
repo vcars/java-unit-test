@@ -43,4 +43,7 @@ public class Customers extends BaseEntity{
     @Column(name = "last_login")
     private Date lastLogin;
 
+    @Column(name = "retry_login")
+    private Integer retryLogin;
+
 }

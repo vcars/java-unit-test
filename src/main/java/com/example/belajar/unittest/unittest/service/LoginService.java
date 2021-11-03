@@ -7,6 +7,7 @@ import com.example.belajar.unittest.unittest.repository.CustomersRepository;
 import com.example.belajar.unittest.unittest.util.CacheUtility;
 import com.example.belajar.unittest.unittest.util.CommonUtility;
 import com.example.belajar.unittest.unittest.util.Constants;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,12 @@ public class LoginService {
     @Value("${unittest.session.expired.signing}")
     private Integer sessionExpired;
 
+    @Value("${unittest.session.expired.cooldown}")
+    private Integer cooldown;
+
+    @Value("${unittest.config.retry.login}")
+    private Integer maxLoginRetryLogin;
+
     public LoginService(CustomersRepository customersRepository,
                         CacheUtility cacheUtility,
                         CommonUtility commonUtility){
@@ -33,16 +40,19 @@ public class LoginService {
 
     public SessionResponse execute(LoginRequest request){
         this.doValidateRequest(request);
-        Customers customers = customersRepository.getUserByUsername(request.getUsername()).orElseThrow(()-> new ResponseStatusException(
-                HttpStatus.NOT_FOUND,"User tidak ditemukan"
-        ));
+        Customers customers = customersRepository.getUserByUsername(request.getUsername()).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,"Data tidak ditemukan"));
+
+        this.commonUtility.checkBlockedUser(request.getUsername());
 
         if (!customers.getPassword().equals(request.getPassword()))
         {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Password yang anda masukkan salah");
+            this.checkRetryLoginCount(customers);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"username atau password yang anda masukkan salah");
         }
+
         String uuid = commonUtility.getUuid();
-        this.cacheUtility.set(Constants.CUSTOMER_SESSION,uuid,request.getUsername(),sessionExpired);
+        this.cacheUtility.set(Constants.RDS_CUSTOMER_SESSION,uuid,request.getUsername(),sessionExpired);
         return SessionResponse.builder()
                 .accessToken(uuid)
                 .username(customers.getUsername())
@@ -57,5 +67,20 @@ public class LoginService {
         if (StringUtils.isEmpty(request.getPassword())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"password tidak boleh kosong");
         }
+    }
+
+    private void checkRetryLoginCount(Customers customers){
+        Integer retryCount = ObjectUtils.isEmpty(customers.getRetryLogin()) ? 0 : customers.getRetryLogin();
+        if (retryCount >= maxLoginRetryLogin){
+            updateRetryCount(customers,0);
+            this.cacheUtility.set(Constants.RDS_CUSTOMER_BLOCKED,customers.getUsername(),"LIMIT RETRY LOGIN",cooldown);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,Constants.CUSTOMER_LIMIT_REACH);
+        }
+        updateRetryCount(customers,retryCount+1);
+    }
+
+    private void updateRetryCount(Customers customers , Integer value){
+        customers.setRetryLogin(value);
+        customersRepository.save(customers);
     }
 }
