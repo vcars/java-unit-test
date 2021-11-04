@@ -7,7 +7,6 @@ import com.example.belajar.unittest.unittest.repository.CustomersRepository;
 import com.example.belajar.unittest.unittest.util.CacheUtility;
 import com.example.belajar.unittest.unittest.util.CommonUtility;
 import com.example.belajar.unittest.unittest.util.Constants;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
