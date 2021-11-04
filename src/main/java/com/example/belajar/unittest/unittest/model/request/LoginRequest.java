@@ -1,14 +1,12 @@
 package com.example.belajar.unittest.unittest.model.request;
 
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class LoginRequest {
-    @NonNull
     private String username;
-
-    @NonNull
     private String password;
-
 }

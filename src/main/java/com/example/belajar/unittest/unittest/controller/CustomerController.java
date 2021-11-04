@@ -61,7 +61,7 @@ public class CustomerController {
         if (listCatalogResponse.getCatalogResponseList().isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Data tidak ditemukan");
         }
-        Response response = new Response(listCatalogResponse, "Here's your data", true);
+        Response response = new Response(listCatalogResponse, "Ini data anda", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
