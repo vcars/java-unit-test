@@ -3,6 +3,7 @@ package com.example.belajar.unittest.unittest.adaptor.esb;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.example.belajar.unittest.unittest.adaptor.RestAdaptor;
+import com.example.belajar.unittest.unittest.model.request.EmptyRequest;
 import com.example.belajar.unittest.unittest.model.request.EsbRequest;
 import com.example.belajar.unittest.unittest.model.response.CatalogResponse;
 import com.example.belajar.unittest.unittest.model.response.ListCatalogResponse;
@@ -24,7 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Component
 @Slf4j
-public class GetCatalogAdaptor extends RestAdaptor <Object,ListCatalogResponse> {
+public class GetCatalogAdaptor extends RestAdaptor <EmptyRequest,ListCatalogResponse> {
 
     @Value("${unittest.esb.masterData.catalog.url}")
     private String catalogUrl;
@@ -35,6 +36,7 @@ public class GetCatalogAdaptor extends RestAdaptor <Object,ListCatalogResponse> 
     private RestTemplate restTemplate;
 
     private CacheUtility cacheUtility;
+
     public GetCatalogAdaptor(RestTemplate restTemplate,
                              CacheUtility cacheUtility){
         this.restTemplate = restTemplate;
@@ -42,7 +44,7 @@ public class GetCatalogAdaptor extends RestAdaptor <Object,ListCatalogResponse> 
     }
 
     @Override
-    public ListCatalogResponse execute(Object request) {
+    public ListCatalogResponse execute(EmptyRequest request) {
         String stringCatalog = cacheUtility.get(Constants.RDS_CATALOG,"");
         if (StringUtils.isNotEmpty(stringCatalog)){
             JSONArray cache = JSONArray.parseArray(stringCatalog);
@@ -52,8 +54,9 @@ public class GetCatalogAdaptor extends RestAdaptor <Object,ListCatalogResponse> 
         this.setUrl(this.catalogUrl);
         this.setHttpMethod(HttpMethod.GET);
         try {
-            ResponseEntity<String> responseEntity = super.getResponse(this.generatePayload(new Object()));
+            ResponseEntity<String> responseEntity = super.getResponse(this.generatePayload(request));
             JSONArray arrayCatalog = JSON.parseArray(responseEntity.getBody());
+            log.info("RESPONSE BODY = {}",arrayCatalog);
             ListCatalogResponse catalogResponseList = ListCatalogResponse.builder().catalogResponseList(arrayCatalog.toJavaList(CatalogResponse.class)).build();
             this.cacheUtility.set(Constants.RDS_CATALOG,"",JSON.toJSONString(catalogResponseList.getCatalogResponseList()),catalogExpired);
             return ListCatalogResponse.builder().catalogResponseList(arrayCatalog.toJavaList(CatalogResponse.class)).build();
@@ -68,7 +71,7 @@ public class GetCatalogAdaptor extends RestAdaptor <Object,ListCatalogResponse> 
     }
 
     @Override
-    protected EsbRequest generatePayload(Object request) {
+    protected EsbRequest generatePayload(EmptyRequest request) {
         return EsbRequest.builder()
                 .isPlain(true)
                 .build();

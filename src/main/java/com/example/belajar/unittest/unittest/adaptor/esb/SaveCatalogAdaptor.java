@@ -1,17 +1,11 @@
 package com.example.belajar.unittest.unittest.adaptor.esb;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.example.belajar.unittest.unittest.adaptor.RestAdaptor;
 import com.example.belajar.unittest.unittest.model.request.CatalogRequest;
 import com.example.belajar.unittest.unittest.model.request.EsbRequest;
-import com.example.belajar.unittest.unittest.model.response.CatalogResponse;
-import com.example.belajar.unittest.unittest.model.response.ListCatalogResponse;
 import com.example.belajar.unittest.unittest.model.response.ValidationResponse;
-import com.example.belajar.unittest.unittest.util.CacheUtility;
 import com.example.belajar.unittest.unittest.util.Constants;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -44,7 +38,7 @@ public class SaveCatalogAdaptor extends RestAdaptor<CatalogRequest, ValidationRe
         this.setHttpMethod(HttpMethod.POST);
         try {
             ResponseEntity<String> responseEntity = super.getResponse(this.generatePayload(request));
-            if (responseEntity.getStatusCode().equals(HttpStatus.OK)){
+            if (!responseEntity.getStatusCode().equals(HttpStatus.OK)){
                 return ValidationResponse.builder().result(false).build();
             }
             return ValidationResponse.builder().result(true).build();

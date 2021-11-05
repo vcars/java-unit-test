@@ -23,7 +23,7 @@ public class LogoutService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"access token tidak boleh kosong");
         }
         if (StringUtils.isEmpty(cacheUtility.get(Constants.RDS_CUSTOMER_SESSION,request.getAccessToken()))){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"session tidak ditemukan");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"anda tidak berhak akses");
         }
         cacheUtility.delete(Constants.RDS_CUSTOMER_SESSION,request.getAccessToken());
         return ValidationResponse.builder().result(true).build();

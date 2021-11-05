@@ -2,6 +2,7 @@ package com.example.belajar.unittest.unittest.service;
 
 import com.example.belajar.unittest.unittest.adaptor.esb.GetCatalogAdaptor;
 import com.example.belajar.unittest.unittest.model.request.AccessTokenRequest;
+import com.example.belajar.unittest.unittest.model.request.EmptyRequest;
 import com.example.belajar.unittest.unittest.model.response.ListCatalogResponse;
 import com.example.belajar.unittest.unittest.util.CacheUtility;
 import com.example.belajar.unittest.unittest.util.Constants;
@@ -25,10 +26,13 @@ public class GetCatalogService {
     }
 
     public ListCatalogResponse execute(AccessTokenRequest input){
+        if (StringUtils.isEmpty(input.getAccessToken())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"access token tidak boleh kosong");
+        }
         String sessionCache = this.cacheUtility.get(Constants.RDS_CUSTOMER_SESSION,input.getAccessToken());
         if (StringUtils.isEmpty(sessionCache)){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Anda tidak berhak akses");
         }
-        return getCatalogAdaptor.execute(new Object());
+        return getCatalogAdaptor.execute(new EmptyRequest());
     }
 }

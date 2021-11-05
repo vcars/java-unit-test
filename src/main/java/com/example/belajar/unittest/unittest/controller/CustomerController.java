@@ -33,23 +33,23 @@ public class CustomerController {
         this.saveCatalogService = saveCatalogService;
     }
     @PostMapping("/v1/login")
-    public ResponseEntity<Response> signIn(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<Response> login(@RequestBody LoginRequest loginRequest){
         SessionResponse sessionResponse = loginService.execute(loginRequest);
-        Response response = new Response(sessionResponse, "Login Berhasil", true);
+        Response response = new Response(sessionResponse, "Login berhasil", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/v1/register")
     public ResponseEntity<Response> register(@RequestBody RegisterRequest registerRequest){
         ValidationResponse validationResponse = registerService.execute(registerRequest);
-        Response response = new Response(validationResponse.getResult(), "Pendaftaran Berhasil", true);
+        Response response = new Response(validationResponse.getResult(), "Pendaftaran berhasil", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/v1/logout")
-    public ResponseEntity<Response> changePassword(@RequestBody AccessTokenRequest accessTokenRequest){
-        ValidationResponse validationResponse = logoutService.execute(accessTokenRequest);
-        Response response = new Response(validationResponse.getResult(), "Logout Berhasil", true);
+    public ResponseEntity<Response> logout(@RequestHeader String accessToken){
+        ValidationResponse validationResponse = logoutService.execute(AccessTokenRequest.builder().accessToken(accessToken).build());
+        Response response = new Response(validationResponse.getResult(), "Logout berhasil", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -73,7 +73,7 @@ public class CustomerController {
                 .catalogRequest(request)
                 .build());
         if (!validationResponse.getResult()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Data tidak berhasil dimasukkan");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Data tidak berhasil dimasukkan");
         }
         Response response = new Response(null, "Data berhasil dimasukkan", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
