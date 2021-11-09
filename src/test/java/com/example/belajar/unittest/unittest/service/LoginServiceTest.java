@@ -93,7 +93,6 @@ public class LoginServiceTest {
             loginService.execute(loginRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("username tidak boleh kosong",re.getReason());
             Assertions.assertEquals(HttpStatus.BAD_REQUEST,re.getStatus());
         }
     }
@@ -105,7 +104,6 @@ public class LoginServiceTest {
             loginService.execute(loginRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("password tidak boleh kosong",re.getReason());
             Assertions.assertEquals(HttpStatus.BAD_REQUEST,re.getStatus());
         }
     }
@@ -117,7 +115,6 @@ public class LoginServiceTest {
             loginService.execute(loginRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("Data tidak ditemukan",re.getReason());
             Assertions.assertEquals(HttpStatus.NOT_FOUND,re.getStatus());
         }
     }
@@ -134,7 +131,6 @@ public class LoginServiceTest {
             loginService.execute(loginRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("username atau password yang anda masukkan salah",re.getReason());
             Assertions.assertEquals(HttpStatus.FORBIDDEN,re.getStatus());
         }
     }

@@ -72,7 +72,6 @@ public class SaveCatalogAdaptorTest {
             saveCatalogAdaptor.execute(catalogRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals(Constants.ERR_MESSAGE_SYSTEM,re.getReason());
             Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,re.getStatus());
         }
     }
@@ -86,7 +85,6 @@ public class SaveCatalogAdaptorTest {
             saveCatalogAdaptor.execute(catalogRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals(Constants.ERR_MESSAGE_SYSTEM,re.getReason());
             Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,re.getStatus());
         }
     }

@@ -67,7 +67,6 @@ public class GetCatalogServiceTest {
             getCatalogService.execute(accessTokenRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("Anda tidak berhak akses",re.getReason());
             Assertions.assertEquals(HttpStatus.FORBIDDEN,re.getStatus());
         }
     }
@@ -78,7 +77,6 @@ public class GetCatalogServiceTest {
             getCatalogService.execute(accessTokenRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("access token tidak boleh kosong",re.getReason());
             Assertions.assertEquals(HttpStatus.BAD_REQUEST,re.getStatus());
         }
     }

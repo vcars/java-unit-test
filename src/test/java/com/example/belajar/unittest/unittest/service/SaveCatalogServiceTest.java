@@ -67,7 +67,6 @@ public class SaveCatalogServiceTest {
             saveCatalogService.execute(saveCatalogRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("Anda tidak berhak akses",re.getReason());
             Assertions.assertEquals(HttpStatus.FORBIDDEN,re.getStatus());
         }
     }
@@ -79,7 +78,6 @@ public class SaveCatalogServiceTest {
             saveCatalogService.execute(saveCatalogRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("access token tidak boleh kosong",re.getReason());
             Assertions.assertEquals(HttpStatus.BAD_REQUEST,re.getStatus());
         }
     }
@@ -91,7 +89,6 @@ public class SaveCatalogServiceTest {
             saveCatalogService.execute(saveCatalogRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("catalog name tidak boleh kosong",re.getReason());
             Assertions.assertEquals(HttpStatus.BAD_REQUEST,re.getStatus());
         }
     }
@@ -103,7 +100,6 @@ public class SaveCatalogServiceTest {
             saveCatalogService.execute(saveCatalogRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("stok tidak boleh kosong",re.getReason());
             Assertions.assertEquals(HttpStatus.BAD_REQUEST,re.getStatus());
         }
     }
@@ -115,7 +111,6 @@ public class SaveCatalogServiceTest {
             saveCatalogService.execute(saveCatalogRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("price tidak boleh kosong",re.getReason());
             Assertions.assertEquals(HttpStatus.BAD_REQUEST,re.getStatus());
         }
     }

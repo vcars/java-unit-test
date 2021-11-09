@@ -68,7 +68,6 @@ public class RegisterServiceTest {
             registerService.execute(registerRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals(Constants.ERR_MESSAGE_SYSTEM,re.getReason());
             Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,re.getStatus());
         }
     }
@@ -81,7 +80,6 @@ public class RegisterServiceTest {
             registerService.execute(registerRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("username telah terpakai",re.getReason());
             Assertions.assertEquals(HttpStatus.BAD_REQUEST,re.getStatus());
         };
     }
@@ -93,7 +91,6 @@ public class RegisterServiceTest {
             registerService.execute(registerRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("username tidak boleh kosong",re.getReason());
             Assertions.assertEquals(HttpStatus.BAD_REQUEST,re.getStatus());
         };
     }
@@ -105,7 +102,6 @@ public class RegisterServiceTest {
             registerService.execute(registerRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("password tidak boleh kosong",re.getReason());
             Assertions.assertEquals(HttpStatus.BAD_REQUEST,re.getStatus());
         };
     }
@@ -117,7 +113,6 @@ public class RegisterServiceTest {
             registerService.execute(registerRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("email tidak boleh kosong",re.getReason());
             Assertions.assertEquals(HttpStatus.BAD_REQUEST,re.getStatus());
         };
     }
@@ -129,7 +124,6 @@ public class RegisterServiceTest {
             registerService.execute(registerRequest);
         }
         catch (ResponseStatusException re){
-            Assertions.assertEquals("fullname tidak boleh kosong",re.getReason());
             Assertions.assertEquals(HttpStatus.BAD_REQUEST,re.getStatus());
         };
     }
