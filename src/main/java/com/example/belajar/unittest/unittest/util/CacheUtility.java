@@ -8,11 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
-* @author  Adinandra Dharmasurya
-* @version 1.0
-* @since   2020-09-24
-*/
 @Component
 public class CacheUtility {
 
